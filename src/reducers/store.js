@@ -9,5 +9,4 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
 });
 
-console.log('Initial Store State:', store.getState());
 export default store;

@@ -17,3 +17,7 @@ export const apiUpdateTask = (id, task) => {
 export const apiDeleteTask = (id) => {
   return axios.delete(`${API_URL}/${id}`);
 };
+
+export const createSubtask = (taskId, subtask) => {
+  return axios.post(`${API_URL}/${taskId}/subtasks`, subtask);
+};

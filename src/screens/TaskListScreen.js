@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {  ScrollView, Text, View, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Touchable} from 'react-native';
 import { connect } from 'react-redux';
-import { fetchTasksAction, addTask, updateTask, deleteTask } from '../actions/actions';
+import { fetchTasksAction, addTask, updateTask, deleteTask } from '../actions/taskActions';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
@@ -17,10 +17,12 @@ class TaskList extends Component {
         this.props.fetchTasksAction()
     };
 
-    const navigation = useNavigation();
+    navigation = useNavigation();
+    dispatch = useDispatch();
 
     _handleTaskPress = (task) => {
-        navigation.navigate('Task', { selectedTask: task });
+        dispatch(setSelectedTask(task));
+        navigation.navigate('Task');
     };
 
     _createTask = () => {  

@@ -39,6 +39,11 @@ const tasksReducer = (state = initialState, action) => {
       };
     case 'tasks/deleteTaskFailure':
       return { ...state, status: 'success', error: action.payload };
+    case 'SET_SELECTED_TASK':
+      return {
+        ...state,
+        selectedTask: action.payload
+      };
     default:
       return state;
   }

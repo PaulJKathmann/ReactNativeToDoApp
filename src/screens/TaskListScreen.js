@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {  ScrollView, Text, View, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Touchable} from 'react-native';
 import { connect } from 'react-redux';
 import { fetchTasksAction, addTask, updateTask, deleteTask } from '../actions/actions';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 class TaskList extends Component {    
     constructor(props) {  
@@ -14,6 +15,12 @@ class TaskList extends Component {
     
     componentDidMount() {
         this.props.fetchTasksAction()
+    };
+
+    const navigation = useNavigation();
+
+    _handleTaskPress = (task) => {
+        navigation.navigate('Task', { selectedTask: task });
     };
 
     _createTask = () => {  
@@ -46,11 +53,17 @@ class TaskList extends Component {
 
     _completeTask = (id) => {
         const task = this.props.tasks.tasks.find((task) => task.id === id);
-        console.log("Task is completed: ",task.completed);
         if (task) {
             this.props.updateTask(id, task.name, !task.completed);
         }
-    }  
+    }
+
+    _deleteTask = (id) => {
+        const task = this.props.tasks.tasks.find((task) => task.id === id)
+        if (task) {
+            this.props.deleteTask(id, task.name, !task.completed);
+        }
+    }
 
     _renderTask(task) {
         const textStyle = task.completed ? [styles.itemText, styles.crossedText] : styles.itemText;
@@ -65,8 +78,7 @@ class TaskList extends Component {
                     {task.name}
                 </Text>
             </View>
-            <Icon name="ios-person" size={30} color="#4F8EF7" />
-            <View style={styles.circular}></View>
+            <TouchableOpacity style={styles.circular} onPress={() => this._deleteTask(task.id)}></TouchableOpacity>
         </View>
         );
     }
@@ -172,7 +184,7 @@ const styles = StyleSheet.create({
     circular: {
         width: 12,
         height: 12,
-        borderColor: '#55BCF6',
+        borderColor: 'red',
         borderWidth: 2,
         borderRadius: 5,
     },

@@ -35,3 +35,10 @@ export const deleteTask = (id) => async (dispatch) => {
     dispatch({ type: 'tasks/deleteTaskFailure', payload: error.message });
   }
 };
+
+export const setSelectedTask = (task) => {
+  return {
+    type: 'SET_SELECTED_TASK',
+    payload: task
+  };
+};

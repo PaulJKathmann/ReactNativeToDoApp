@@ -1,10 +1,11 @@
-const initialState = {
-  tasks: [],
+const initialTaskState = {
+  byId: {},
+  allIds: [],
   status: 'idle',
   error: null,
 };
 
-const tasksReducer = (state = initialState, action) => {
+const tasksReducer = (state = initialTaskState, action) => {
   switch (action.type) {
     case 'tasks/fetchTasksRequest':
       return {
@@ -12,52 +13,60 @@ const tasksReducer = (state = initialState, action) => {
         status: 'loading',
       };
     case 'tasks/fetchTasksSuccess':
-      return { ...state, tasks: action.payload, status: 'success', error: null };
+      const fetchedTasksById = action.payload.reduce((acc, task) => {
+        acc[task.id] = task;
+        return acc;
+      }, {});
+
+      return { 
+        ...state, 
+        byId: {
+          ...state.byId,
+          ...fetchedTasksById,
+        },
+        allIds: [...state.allIds, ...action.payload.map((task) => task.id)],
+        status: 'success', 
+        error: null 
+      };
     case 'tasks/fetchTasksFailure':
-      return { ...state, status: 'failure', error: action.payload };
+      return { ...state, status: 'failure', error: action.payload.error };
     case 'tasks/addTaskSuccess':
-      return { ...state, tasks: [...state.tasks, action.payload], status: 'success', error: null };
+      return { 
+        ...state, 
+        byId: { 
+          ...state.byId, 
+          [action.payload.id]:  action.payload
+        }, 
+        allIds: [...state.allIds, action.payload.id],
+        status: 'success', 
+        error: null
+      };
     case 'tasks/addTaskFailure':
-      return { ...state, status: 'failure', error: action.payload };
+      return { ...state, status: 'failure', error: action.payload.error };
     case 'tasks/updateTaskSuccess':
       return {
         ...state,
-        tasks: state.tasks.map((task) =>
-          task.id === action.payload.id ? action.payload : task
-        ),
+        byId: {
+          ...state.byId,
+          [action.payload.id]: action.payload
+        },
+        allIds: [...state.allIds, action.payload.id],
         status: 'success',
         error: null,
       };
     case 'tasks/updateTaskFailure':
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, status: 'failure', error: action.payload.error };
     case 'tasks/deleteTaskSuccess':
+      const { [action.payload.id]: _, ...remainingTasks } = state.byId;
       return {
         ...state,
-        tasks: state.tasks.filter((task) => task.id !== action.payload.id),
+        byId: remainingTasks,
+        allIds: state.allIds.filter((id) => id !== action.payload.id),
         status: 'success',
         error: null,
       };
     case 'tasks/deleteTaskFailure':
-      const { taskId, subtask } = action.payload;
-      const task = state.byId[taskId];
-      return { 
-        ...state,
-        byId: { 
-          ...state.byId,
-          [taskId]: {
-            ...task,
-            subtasks: {
-              ...task.subtasks,
-              [subtask.id]: subtask
-            }
-          }
-        }
-        status: 'success', error: action.payload 
-      };
-    case 'subtasks/addSubtaskSuccess':
-      return { ...state, tasks: [...state.tasks, action.payload], status: 'success', error: null };
-    case 'subtasks/addSubtaskFailure':
-      return { ...state, status: 'failure', error: action.payload };
+      return { ...state, status: 'failure', error: action.payload.error };
     case 'SET_SELECTED_TASK':
       return {
         ...state,

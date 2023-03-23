@@ -1,4 +1,4 @@
-import { createSubtask, fetchTasks, createTask, apiUpdateTask, apiDeleteTask } from '../api/taskApi';
+import { fetchTasks, createTask, apiUpdateTask, apiDeleteTask } from '../api/taskApi';
 
 export const fetchTasksAction = () => async (dispatch) => {
   try {
@@ -43,12 +43,5 @@ export const setSelectedTask = (task) => {
   };
 };
 
-export const addSubtask = (taskId, name) => async (dispatch) => {
-  try {
-    const response = await createSubtask(taskId , {name, completed: false });
-    dispatch({ type: 'subtasks/addSubtaskSuccess', payload: response.data });
-  } catch (error) {
-    dispatch({ type: 'subtasks/addSubtaskFailure', payload: error.message });
-  }
-}
+
 

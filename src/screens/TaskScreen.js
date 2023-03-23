@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
+import { getTaskById } from './selectors/tasks';
+import { getSubtasksByTaskId } from './selectors/subtasks';
 
-const TaskScreen = ({ route }) => {
+const TaskScreen = ({ task, subtasks }) => {
     const selectedTask = useSelector((state) => state.selectedTask);
     const { task } = route.params;
     const [subtasks, setSubtasks] = useState(task.subtasks || []);
@@ -65,6 +68,13 @@ const TaskScreen = ({ route }) => {
     itemText: {
       fontSize: 16,
     },
-});  
+});
 
-export default TaskScreen;
+const mapStateToProps = (state, ownProps) => {
+  const task = getTaskById(state, ownProps.id);
+  const subtasks = getSubtasksByTaskId(state, ownProps.id);
+  return { task, subtasks };
+};
+
+export default connect(mapStateToProps)(TaskScreen);
+

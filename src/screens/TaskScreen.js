@@ -5,43 +5,20 @@ import { connect } from 'react-redux';
 import { getTaskById } from './selectors/tasks';
 import { getSubtasksByTaskId } from './selectors/subtasks';
 
-const TaskScreen = ({ task, subtasks }) => {
-    const selectedTask = useSelector((state) => state.selectedTask);
-    const { task } = route.params;
-    const [subtasks, setSubtasks] = useState(task.subtasks || []);
-    const [newSubtask, setNewSubtask] = useState('');
-  
-    const addSubtask = () => {
-      if (newSubtask.trim() !== '') {
-        setSubtasks([...subtasks, { id: subtasks.length + 1, title: newSubtask.trim() }]);
-        setNewSubtask('');
-      }
-    };
-  
-    const renderItem = ({ item }) => (
-      <View style={styles.item}>
-        <Text style={styles.itemText}>{item.title}</Text>
-      </View>
-    );
-  
+const TaskScreen = ({ taskId }) => {
+
+    task = useSelector((state) => getTaskById(state, taskId));
+    subtasks = useSelector((state) => getSubtasksByTaskId(state, taskId));
+    
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>{task.title}</Text>
-        <FlatList
-          data={subtasks}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setNewSubtask}
-          value={newSubtask}
-          placeholder="Add a new subtask"
-        />
-        <Button title="Add Subtask" onPress={addSubtask} />
-      </View>
+        <View style={styles.container}>
+            <Text style={styles.title}>{task.name}</Text>
+            {subtasks.map((subtask) => (
+              <Subtask key={subtask.id} subtask={subtask} />
+            ))}
+        </View>
     );
-  };
+};
 
   const styles = StyleSheet.create({
     container: {
@@ -68,6 +45,7 @@ const TaskScreen = ({ task, subtasks }) => {
     itemText: {
       fontSize: 16,
     },
+    
 });
 
 const mapStateToProps = (state, ownProps) => {

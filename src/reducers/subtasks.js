@@ -5,27 +5,24 @@ const initialSubtasksState = {
     error: null,
   };
 
-const subtasksReducer = (state = initialTaskState, action) => {
+const subtasksReducer = (state = initialSubtaskState, action) => {
     switch (action.type) {
-        case 'subtasks/fetchSubtasksRequest':
-          return {
-            ...state,
-            status: 'loading',
-          };
-        case 'subtasks/fetchSubtasksSuccess':
-          const fetchedSubtasksById = action.payload.reduce((acc, subtask) => {
-            acc[subtask.id] = subtask;
+        case 'tasks/fetchTasksSuccess':
+          const fetchedSubtasksById = action.payload.reduce((acc, task) => {
+            task.subtasks.forEach((subtask) => {
+              acc[subtask.id] = subtask;
+            });
             return acc;
           }, {});
-          return { 
-            ...state, 
-            byId: {
-              ...state.byId,
-              ...fetchedSubtasksById
-            },
-            allIds: [...state.allIds, ...action.payload.subtasks.map((subtask) => subtask.id)],
-            status: 'success', 
-            error: null 
+        
+          return {
+            ...state,
+            status: 'success',
+            byId: { ...state.byId, ...fetchedSubtasksById },
+            allIds: [
+              ...state.allIds,
+              ...action.payload.flatMap((task) => task.subtasks.map((subtask) => subtask.id))
+            ],
           };
         case 'tasks/fetchTasksFailure':
           return { ...state, status: 'failure', error: action.payload.error };
@@ -69,7 +66,6 @@ const subtasksReducer = (state = initialTaskState, action) => {
         default:
           return state;
       }
-    };
-}
+};
 
   

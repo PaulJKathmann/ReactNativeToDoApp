@@ -5,7 +5,7 @@ const initialTaskState = {
   error: null,
 };
 
-const tasksReducer = (state = initialTaskState, action) => {
+const taskReducer = (state = initialTaskState, action) => {
   switch (action.type) {
     case 'tasks/fetchTasksRequest':
       return {
@@ -17,12 +17,11 @@ const tasksReducer = (state = initialTaskState, action) => {
         acc[task.id] = task;
         return acc;
       }, {});
-
       return { 
         ...state, 
         byId: {
           ...state.byId,
-          ...fetchedTasksById,
+          ...fetchedTasksById
         },
         allIds: [...state.allIds, ...action.payload.map((task) => task.id)],
         status: 'success', 
@@ -77,4 +76,4 @@ const tasksReducer = (state = initialTaskState, action) => {
   }
 };
 
-export default tasksReducer;
+export default taskReducer;

@@ -5,7 +5,7 @@ const initialSubtasksState = {
     error: null,
   };
 
-const subtasksReducer = (state = initialSubtaskState, action) => {
+const subtasksReducer = (state = initialSubtasksState, action) => {
     switch (action.type) {
         case 'tasks/fetchTasksSuccess':
           const fetchedSubtasksById = action.payload.reduce((acc, task) => {
@@ -68,4 +68,4 @@ const subtasksReducer = (state = initialSubtaskState, action) => {
       }
 };
 
-  
+export default subtasksReducer;

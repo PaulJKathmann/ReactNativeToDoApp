@@ -1,45 +1,36 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {  ScrollView, Text, View, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Touchable} from 'react-native';
 import { connect } from 'react-redux';
-import { fetchTasksAction, addTask, updateTask, deleteTask } from '../actions/taskActions';
+import { fetchTasksAction, addTask, updateTask, deleteTask, setSelectedTask } from '../actions/taskActions';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
-class TaskList extends Component {    
-    constructor(props) {  
-        super(props);  
-        this.state = {    
-          text: '',
-        };
-    }
-    
-    componentDidMount() {
-        this.props.fetchTasksAction()
-    };
 
-    navigation = useNavigation();
-    dispatch = useDispatch();
+const TaskList = (props) => {
+    const [text, setText] = useState('');
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    
+    useEffect(() =>  {
+        props.fetchTasksAction();
+        console.log(props.tasks);
+    }, []);
 
     _handleTaskPress = (task) => {
+        const { id: taskId } = task;
         dispatch(setSelectedTask(task));
-        navigation.navigate('Task');
+        props.navigation.navigate('TaskScreen', {taskId});
     };
 
-    _createTask = () => {  
-        const {text} = this.state; 
+    _createTask = () => { 
         const task = {name: text, completed: false};  
-        this.props.createTask(task);  
-        this.setState({text: ""});
-    }
-    
-    _completeTask = () => {
-        /* write function to complete task: once done add it to render task function on press */
+        props.createTask(task);  
+        setText("");
     }
 
-    _renderTasks() {
-        const { status, tasks} = this.props.tasks;
+    _renderTasks = () => {
+        const { status, allIds, byId } = props.tasks;
 
-        
         if (status === 'failure') {
             return <Text>{'Error'}</Text>;
         } else if (status === 'loading') {
@@ -48,48 +39,48 @@ class TaskList extends Component {
 
         return (
             <View style={styles.items}>
-                {tasks.map((task) => this._renderTask(task))}
+                {allIds.map((taskId) => _renderTask(byId[taskId]))}
             </View>
-        );
+        )
     };
 
     _completeTask = (id) => {
-        const task = this.props.tasks.tasks.find((task) => task.id === id);
+        const task = props.tasks.tasks.find((task) => task.id === id);
         if (task) {
-            this.props.updateTask(id, task.name, !task.completed);
+            props.updateTask(id, task.name, !task.completed);
         }
     }
 
     _deleteTask = (id) => {
-        const task = this.props.tasks.tasks.find((task) => task.id === id)
+        const task = props.tasks.tasks.find((task) => task.id === id)
         if (task) {
-            this.props.deleteTask(id, task.name, !task.completed);
+            props.deleteTask(id, task.name, !task.completed);
         }
     }
 
-    _renderTask(task) {
+    _renderTask = (task) => {
         const textStyle = task.completed ? [styles.itemText, styles.crossedText] : styles.itemText;
         const squareStyle = task.completed ? [styles.square, styles.completedSquare] : styles.square;
         
         return (
         <View style={styles.item} key={task.id}>
             <View style={styles.itemLeft}>
-                <TouchableOpacity style={squareStyle} onPress={() => this._completeTask(task.id)}>
+                <TouchableOpacity style={squareStyle} onPress={() => _completeTask(task.id)}>
                 </TouchableOpacity>
-                <Text style={textStyle}>
-                    {task.name}
-                </Text>
+                <TouchableOpacity style={textStyle} onPress={() => _handleTaskPress(task.id)} key={task.id} >
+                    <Text>{task.name}</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.circular} onPress={() => this._deleteTask(task.id)}></TouchableOpacity>
+            <TouchableOpacity style={styles.circular} onPress={() => _deleteTask(task.id)}></TouchableOpacity>
         </View>
         );
     }
 
-    _renderTaskInput() {  
+    _renderTaskInput = () => {  
         return (
                 <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height" } style={styles.writeTaskWrapper} >
-                    <TextInput style={styles.input} placeholder={'Write a task'} value={this.state.text} onChangeText={text => this.setState({text})} />
-                    <TouchableOpacity onPress={this._createTask} >
+                    <TextInput style={styles.input} placeholder={'Write a task'} value={text} onChangeText={text => setText(text)} />
+                    <TouchableOpacity onPress={_createTask} >
                         <View style={styles.addWrapper}>
                             <Text style={styles.addText}>+</Text>
                         </View>
@@ -97,17 +88,16 @@ class TaskList extends Component {
                 </KeyboardAvoidingView>
         );
     }
-    render() {
-        return (
-            <View style={styles.container}>
-                <ScrollView>
-                    <Text style={styles.sectionTitle}>Today's Tasks</Text>
-                    {this._renderTasks()}
-                </ScrollView>
-                {this._renderTaskInput()} 
-            </View>
-        );  
-    }
+
+    return (
+        <View style={styles.container}>
+            <ScrollView>
+                <Text style={styles.sectionTitle}>Today's Tasks</Text>
+                {_renderTasks()}
+            </ScrollView>
+            {_renderTaskInput()} 
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({

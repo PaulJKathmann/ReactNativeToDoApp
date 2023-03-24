@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { updateSubtask } from './actions/subtasks';
+import { updateSubtask } from '../actions/subtaskActions';
+import { useDispatch } from 'react-redux';
 
 const Subtask = ({subtask}) => {
+    const dispatch = useDispatch();
     _completeSubtask = (id) => {
         if (subtask) {
             dispatch(updateSubtask(!subtask.completed));

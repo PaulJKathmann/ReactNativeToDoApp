@@ -30,7 +30,7 @@ const TaskList = (props) => {
 
     _renderTasks = () => {
         const { status, allIds, byId } = props.tasks;
-
+        
         if (status === 'failure') {
             return <Text>{'Error'}</Text>;
         } else if (status === 'loading') {

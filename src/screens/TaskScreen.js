@@ -51,8 +51,8 @@ const TaskScreen = ({ route }) => {
 });
 
 const mapStateToProps = (state, ownProps) => {
-  const task = getTaskById(state, ownProps.id);
-  const subtasks = getSubtasksByTaskId(state, ownProps.id);
+  const task = getTaskById(state, ownProps.route.params.taskId);
+  const subtasks = getSubtasksByTaskId(state, ownProps.route.params.taskId);
   return { task, subtasks };
 };
 

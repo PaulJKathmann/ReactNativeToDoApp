@@ -17,13 +17,14 @@ const taskReducer = (state = initialTaskState, action) => {
         acc[task.id] = task;
         return acc;
       }, {});
+      const newIds = action.payload.map((task) => task.id).filter((id) => !state.allIds.includes(id));
       return { 
         ...state, 
         byId: {
           ...state.byId,
           ...fetchedTasksById
         },
-        allIds: [...state.allIds, ...action.payload.map((task) => task.id)],
+        allIds: [...state.allIds, ...newIds],
         status: 'success', 
         error: null 
       };

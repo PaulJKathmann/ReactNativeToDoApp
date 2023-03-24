@@ -7,10 +7,11 @@ import { getSubtasksByTaskId } from '../selectors/subtasks';
 import Subtask from '../components/Subtask';
 
 const TaskScreen = ({ route }) => {
-    const { taskId } = route.params;
+    const { taskId } = route.params; 
+    console.log("Task ID: ", taskId);
     task = useSelector((state) => getTaskById(state, taskId));
     subtasks = useSelector((state) => getSubtasksByTaskId(state, taskId));
-    
+    console.log("Subtask in TaskScreen: ", subtasks);
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{task.name}</Text>

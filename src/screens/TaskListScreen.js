@@ -17,9 +17,9 @@ const TaskList = (props) => {
     }, []);
 
     _handleTaskPress = (task) => {
-        const { id: taskId } = task;
+        const taskId = task.id;
         dispatch(setSelectedTask(task));
-        props.navigation.navigate('TaskScreen', {taskId});
+        props.navigation.navigate("TaskScreen", { taskId });
     };
 
     _createTask = () => { 
@@ -67,7 +67,7 @@ const TaskList = (props) => {
             <View style={styles.itemLeft}>
                 <TouchableOpacity style={squareStyle} onPress={() => _completeTask(task.id)}>
                 </TouchableOpacity>
-                <TouchableOpacity style={textStyle} onPress={() => _handleTaskPress(task.id)} key={task.id} >
+                <TouchableOpacity style={textStyle} onPress={() => _handleTaskPress(task)} key={task.id} >
                     <Text>{task.name}</Text>
                 </TouchableOpacity>
             </View>

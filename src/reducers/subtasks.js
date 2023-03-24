@@ -14,7 +14,7 @@ const subtasksReducer = (state = initialSubtasksState, action) => {
             });
             return acc;
           }, {});
-        
+   
           return {
             ...state,
             status: 'success',

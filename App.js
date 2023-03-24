@@ -13,7 +13,7 @@ function MyStack() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="TaskList" component={TaskList} />
-        <Stack.Screen name="Task" component={TaskScreen} />
+        <Stack.Screen name="TaskScreen" component={TaskScreen} />
       </Stack.Navigator>  
     </NavigationContainer>
   );

@@ -9,4 +9,4 @@ export const createSubtask = (taskId, subtask) => {
 export const apiUpdateSubtask = (subtask) => {
     console.log("API subtask", subtask.completed);
     return axios.put(`${API_URL}/${subtask.task_id}/subtasks/${subtask.id}`, subtask);
-  };
+};

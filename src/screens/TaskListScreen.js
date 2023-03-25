@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {  ScrollView, Text, View, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, Keyboard, Touchable} from 'react-native';
+import {  ScrollView, Text, View, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { fetchTasksAction, addTask, updateTask, deleteTask, setSelectedTask } from '../actions/taskActions';
 import { useNavigation } from '@react-navigation/native';
@@ -30,7 +30,7 @@ const TaskList = (props) => {
 
     _renderTasks = () => {
         const { status, allIds, byId } = props.tasks;
-        
+
         if (status === 'failure') {
             return <Text>{'Error'}</Text>;
         } else if (status === 'loading') {

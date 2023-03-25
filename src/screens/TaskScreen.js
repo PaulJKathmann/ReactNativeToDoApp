@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 import { connect } from 'react-redux';
 import { getTaskById } from '../selectors/tasks';
 import { getSubtasksByTaskId } from '../selectors/subtasks';
 import Subtask from '../components/Subtask';
+import SubtaskInput from '../components/SubtaskInput';
 
 const TaskScreen = ({ route }) => {
     const { taskId } = route.params;
     task = useSelector((state) => getTaskById(state, taskId));
     subtasks = useSelector((state) => getSubtasksByTaskId(state, taskId));
+
     return (
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <ScrollView >
             <Text style={styles.title}>{task.name}</Text>
             <FlatList
                 data={subtasks}
                 renderItem={({ item }) => <Subtask subtaskId={item.id} />}
                 keyExtractor={(item) => item.id.toString()}
             />
-        </View>
+        </ScrollView>
+        <SubtaskInput taskId={taskId} />
+      </View>
     );
 };
 

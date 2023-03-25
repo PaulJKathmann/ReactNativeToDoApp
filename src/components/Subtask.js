@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { completeSubtask } from '../actions/subtaskActions';
+import { completeSubtask, deleteSubtask } from '../actions/subtaskActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Subtask = ({subtaskId}) => {
@@ -13,6 +13,10 @@ const Subtask = ({subtaskId}) => {
             dispatch(completeSubtask(updatedSubtask));
         }
     }
+    const _deleteTask = () => {
+        dispatch(deleteSubtask(subtask));
+    };
+
     const textStyle = subtask.completed ? [styles.itemText, styles.crossedText] : styles.itemText;
     const squareStyle = subtask.completed ? [styles.square, styles.completedSquare] : styles.square;
 
@@ -25,7 +29,7 @@ const Subtask = ({subtaskId}) => {
                     {subtask.name}
                 </Text>
             </View>
-            <View style={styles.circular}></View>
+            <TouchableOpacity style={styles.circular} onPress={_deleteTask}></TouchableOpacity>
         </View>
     )
 }
@@ -62,7 +66,7 @@ const styles = StyleSheet.create({
     circular: {
         width: 12,
         height: 12,
-        borderColor: '#55BCF6',
+        borderColor: 'red',
         borderWidth: 2,
         borderRadius: 5,
     },

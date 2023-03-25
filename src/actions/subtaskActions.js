@@ -1,5 +1,4 @@
-import { createSubtask } from '../api/subtaskApi';
-import { apiUpdateSubtask } from '../api/subtaskApi';
+import { createSubtask, apiDeleteSubtask, apiUpdateSubtask } from '../api/subtaskApi';
 
 export const addSubtask = (taskId, name) => async (dispatch) => {
     try {
@@ -13,10 +12,17 @@ export const addSubtask = (taskId, name) => async (dispatch) => {
 export const completeSubtask = (subtask) => async (dispatch) => {
   try {
     const response = await apiUpdateSubtask(subtask);
-    console.log("API RESPONSE", response.data);
     dispatch({ type: 'tasks/updateSubtaskSuccess', payload: response.data });
   } catch (error) {
-    console.log("API RESPONSE Failed", error.message);
     dispatch({ type: 'tasks/updateSubtaskFailure', payload: error.message });
+  }
+};
+
+export const deleteSubtask = (subtask) => async (dispatch) => {
+  try {
+    const response = await apiDeleteSubtask(subtask);
+    dispatch({ type: 'subtasks/deleteSubtaskSuccess', payload: { id: subtask.id } });
+  } catch (error) {
+    dispatch({ type: 'subtasks/deleteSubtaskFailure', payload: error.message });
   }
 };

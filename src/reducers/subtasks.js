@@ -39,18 +39,18 @@ const subtasksReducer = (state = initialSubtasksState, action) => {
           };
         case 'subtasks/addSubtaskFailure':
           return { ...state, status: 'failure', error: action.payload.error };
-        case 'tasks/deleteTaskSuccess':
-          const { [action.payload.id]: _, ...remainingTasks } = state.byId;
+        case 'subtasks/deleteSubtaskSuccess':
+          const { [action.payload.id]: _, ...remainingSubtasks } = state.byId;
           return {
             ...state,
-            byId: remainingTasks,
+            byId: remainingSubtasks,
             allIds: state.allIds.filter((id) => id !== action.payload.id),
             status: 'success',
             error: null,
           };
-        case 'tasks/deleteTaskFailure':
+        case 'subtasks/deleteSubtaskFailure':
           return { ...state, status: 'failure', error: action.payload.error };
-        case 'tasks/updateSubtaskSuccess':
+        case 'sutasks/updateSubtaskSuccess':
           return {
             ...state,
             byId: {

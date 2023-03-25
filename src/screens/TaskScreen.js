@@ -7,17 +7,17 @@ import { getSubtasksByTaskId } from '../selectors/subtasks';
 import Subtask from '../components/Subtask';
 
 const TaskScreen = ({ route }) => {
-    const { taskId } = route.params; 
-    console.log("Task ID: ", taskId);
+    const { taskId } = route.params;
     task = useSelector((state) => getTaskById(state, taskId));
     subtasks = useSelector((state) => getSubtasksByTaskId(state, taskId));
-    console.log("Subtask in TaskScreen: ", subtasks);
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{task.name}</Text>
-            {subtasks.map((subtask) => (
-              <Subtask key={subtask.id} subtask={subtask} />
-            ))}
+            <FlatList
+                data={subtasks}
+                renderItem={({ item }) => <Subtask subtaskId={item.id} />}
+                keyExtractor={(item) => item.id.toString()}
+            />
         </View>
     );
 };

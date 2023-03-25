@@ -1,14 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { updateSubtask } from '../actions/subtaskActions';
-import { useDispatch } from 'react-redux';
+import { completeSubtask } from '../actions/subtaskActions';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Subtask = ({subtask}) => {
+const Subtask = ({subtaskId}) => {
     const dispatch = useDispatch();
-    _completeSubtask = (id) => {
+    const subtask = useSelector(state => state.subtasks.byId[subtaskId]);
+
+    const _completeSubtask = () => {
         if (subtask) {
-            dispatch(updateSubtask(!subtask.completed));
-        }  
+            const updatedSubtask = { id: subtask.id, completed: !subtask.completed, task_id: subtask.task_id };
+            dispatch(completeSubtask(updatedSubtask));
+        }
     }
     const textStyle = subtask.completed ? [styles.itemText, styles.crossedText] : styles.itemText;
     const squareStyle = subtask.completed ? [styles.square, styles.completedSquare] : styles.square;
@@ -16,7 +19,7 @@ const Subtask = ({subtask}) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <TouchableOpacity style={squareStyle} onPress={() => _completeSubtask(subtask.id)}>
+                <TouchableOpacity style={squareStyle} onPress={_completeSubtask}>
                 </TouchableOpacity>
                 <Text style={textStyle}>
                     {subtask.name}

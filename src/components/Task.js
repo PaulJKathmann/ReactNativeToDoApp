@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { completeTask, setSelectedTask } from '../actions/taskActions';
+import { completeTask, setSelectedTask, deleteTask } from '../actions/taskActions';
 import { useNavigation } from '@react-navigation/native';
 
 const Task = ({taskId}) => {
@@ -21,6 +21,11 @@ const Task = ({taskId}) => {
         navigation.navigate("TaskScreen", { taskId });
     };
 
+    const _deleteTask = () => {
+        console.log("Delete Task");
+        dispatch(deleteTask(task.id));
+    };
+
     const textStyle = task.completed ? [styles.itemText, styles.crossedText] : styles.itemText;
     const squareStyle = task.completed ? [styles.square, styles.completedSquare] : styles.square;
 
@@ -33,7 +38,7 @@ const Task = ({taskId}) => {
                     {task.name}
                 </Text>
             </View>
-            <View style={styles.circular}></View>
+            <TouchableOpacity style={styles.circular} onPress={_deleteTask} ></TouchableOpacity>
         </View>
     )
 }
@@ -70,7 +75,7 @@ const styles = StyleSheet.create({
     circular: {
         width: 12,
         height: 12,
-        borderColor: '#55BCF6',
+        borderColor: 'red',
         borderWidth: 2,
         borderRadius: 5,
     },

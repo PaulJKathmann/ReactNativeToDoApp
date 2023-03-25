@@ -1,16 +1,36 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { completeTask} from '../../App';
+import { useDispatch, useSelector } from 'react-redux';
+import { completeTask, setSelectedTask } from '../actions/taskActions';
+import { useNavigation } from '@react-navigation/native';
 
-const Task = (props) => {
-    const {index, completeTask } = props;
+const Task = ({taskId}) => {
+    const dispatch = useDispatch();
+    const task = useSelector(state => state.tasks.byId[taskId]);
+    const navigation = useNavigation();
+
+    const _completeTask = () => {
+        if (task) {
+            const updatedTask = { id: task.id, completed: !task.completed };
+            dispatch(completeTask(updatedTask));
+        }
+    }
+    const _handleTaskPress = () => {
+        dispatch(setSelectedTask(task));
+        console.log("Task pressed");
+        navigation.navigate("TaskScreen", { taskId });
+    };
+
+    const textStyle = task.completed ? [styles.itemText, styles.crossedText] : styles.itemText;
+    const squareStyle = task.completed ? [styles.square, styles.completedSquare] : styles.square;
+
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <TouchableOpacity style={styles.square} key={index} onPress={() => completeTask(index)}>
+                <TouchableOpacity style={squareStyle} onPress={_completeTask}>
                 </TouchableOpacity>
-                <Text style={styles.itemText}>
-                    {props.text}
+                <Text style={textStyle} onPress={_handleTaskPress}>
+                    {task.name}
                 </Text>
             </View>
             <View style={styles.circular}></View>
@@ -53,6 +73,14 @@ const styles = StyleSheet.create({
         borderColor: '#55BCF6',
         borderWidth: 2,
         borderRadius: 5,
+    },
+    crossedText: {
+        textDecorationLine: 'line-through',
+        textDecorationStyle: 'solid',
+        textDecorationColor: '#000',
+    },
+    completedSquare: {
+        backgroundColor: '#3B83AC',
     },
 });
 

@@ -18,7 +18,7 @@ export const addTask = (name) => async (dispatch) => {
   }
 };
 
-export const updateTask = (id, name, completed) => async (dispatch) => {
+export const completeTask = (id, name, completed) => async (dispatch) => {
   try {
     const response = await apiUpdateTask(id, { name, completed });
     dispatch({ type: 'tasks/updateTaskSuccess', payload: response.data });

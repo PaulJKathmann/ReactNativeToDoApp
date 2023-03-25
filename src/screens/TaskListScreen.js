@@ -1,79 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import {  ScrollView, Text, View, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
+import { FlatList, Text, View, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { fetchTasksAction, addTask, updateTask, deleteTask, setSelectedTask } from '../actions/taskActions';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Task from '../components/Task';
+import { getAllTasks } from '../selectors/tasks';
+import TaskInput from '../components/TaskInput';
 
 
-const TaskList = (props) => {
-    const [text, setText] = useState('');
-    const navigation = useNavigation();
+const TaskList = () => {
+    const [text, setText] = useState(''); 
     const dispatch = useDispatch();
-    
-    useEffect(() =>  {
-        props.fetchTasksAction();
-        console.log(props.tasks);
-    }, []);
-
-    _handleTaskPress = (task) => {
-        const taskId = task.id;
-        dispatch(setSelectedTask(task));
-        props.navigation.navigate("TaskScreen", { taskId });
-    };
+    const tasks = useSelector((state) => getAllTasks(state));
+  
+    useEffect(() => {
+      dispatch(fetchTasksAction());
+    }, [dispatch]); 
 
     _createTask = () => { 
         const task = {name: text, completed: false};  
         props.createTask(task);  
         setText("");
-    }
-
-    _renderTasks = () => {
-        const { status, allIds, byId } = props.tasks;
-
-        if (status === 'failure') {
-            return <Text>{'Error'}</Text>;
-        } else if (status === 'loading') {
-            return <Text>{'Loading'}</Text>;
-        }
-
-        return (
-            <View style={styles.items}>
-                {allIds.map((taskId) => _renderTask(byId[taskId]))}
-            </View>
-        )
-    };
-
-    _completeTask = (id) => {
-        const task = props.tasks.tasks.find((task) => task.id === id);
-        if (task) {
-            props.updateTask(id, task.name, !task.completed);
-        }
-    }
-
-    _deleteTask = (id) => {
-        const task = props.tasks.tasks.find((task) => task.id === id)
-        if (task) {
-            props.deleteTask(id, task.name, !task.completed);
-        }
-    }
-
-    _renderTask = (task) => {
-        const textStyle = task.completed ? [styles.itemText, styles.crossedText] : styles.itemText;
-        const squareStyle = task.completed ? [styles.square, styles.completedSquare] : styles.square;
-        
-        return (
-        <View style={styles.item} key={task.id}>
-            <View style={styles.itemLeft}>
-                <TouchableOpacity style={squareStyle} onPress={() => _completeTask(task.id)}>
-                </TouchableOpacity>
-                <TouchableOpacity style={textStyle} onPress={() => _handleTaskPress(task)} key={task.id} >
-                    <Text>{task.name}</Text>
-                </TouchableOpacity>
-            </View>
-            <TouchableOpacity style={styles.circular} onPress={() => _deleteTask(task.id)}></TouchableOpacity>
-        </View>
-        );
     }
 
     _renderTaskInput = () => {  
@@ -91,11 +38,15 @@ const TaskList = (props) => {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <View>
                 <Text style={styles.sectionTitle}>Today's Tasks</Text>
-                {_renderTasks()}
-            </ScrollView>
-            {_renderTaskInput()} 
+                <FlatList
+                    data={tasks}
+                    renderItem={({ item }) => <Task taskId={item.id} />}
+                    keyExtractor={(item) => item.id.toString()}
+                /> 
+            </View>
+            <TaskInput />
         </View>
     );
 }

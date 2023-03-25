@@ -14,14 +14,12 @@ const TaskScreen = ({ route }) => {
 
     return (
       <View style={styles.container}>
-        <ScrollView >
             <Text style={styles.title}>{task.name}</Text>
             <FlatList
                 data={subtasks}
                 renderItem={({ item }) => <Subtask subtaskId={item.id} />}
                 keyExtractor={(item) => item.id.toString()}
             />
-        </ScrollView>
         <SubtaskInput taskId={taskId} />
       </View>
     );

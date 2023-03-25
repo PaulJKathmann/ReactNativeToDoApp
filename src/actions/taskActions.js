@@ -18,11 +18,13 @@ export const addTask = (name) => async (dispatch) => {
   }
 };
 
-export const completeTask = (id, name, completed) => async (dispatch) => {
+export const completeTask = (task) => async (dispatch) => {
   try {
-    const response = await apiUpdateTask(id, { name, completed });
+    const response = await apiUpdateTask(task);
+    console.log("API Task RESPONSE", response.data);
     dispatch({ type: 'tasks/updateTaskSuccess', payload: response.data });
   } catch (error) {
+    console.log("API Task RESPONSE Failed", error.message);
     dispatch({ type: 'tasks/updateTaskFailure', payload: error.message });
   }
 };

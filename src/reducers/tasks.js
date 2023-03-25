@@ -50,7 +50,6 @@ const taskReducer = (state = initialTaskState, action) => {
           ...state.byId,
           [action.payload.id]: action.payload
         },
-        allIds: [...state.allIds, action.payload.id],
         status: 'success',
         error: null,
       };

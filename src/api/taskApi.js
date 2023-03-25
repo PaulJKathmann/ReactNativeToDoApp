@@ -10,8 +10,8 @@ export const createTask = (task) => {
   return axios.post(API_URL, task);
 };
 
-export const apiUpdateTask = (id, task) => {
-  return axios.put(`${API_URL}/${id}`, task);
+export const apiUpdateTask = (task) => {
+  return axios.put(`${API_URL}/${task.id}`, task);
 };
 
 export const apiDeleteTask = (id) => {

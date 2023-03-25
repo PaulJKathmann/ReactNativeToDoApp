@@ -28,30 +28,42 @@ const TaskInput = () => {
 const styles = StyleSheet.create({
     writeTaskWrapper: {
       position: 'absolute',
-      bottom: 60,
+      bottom: 20,
       width: '100%',
       flexDirection: 'row',
       justifyContent: 'space-around',
-      alignItems: 'center'
+      alignItems: 'center' 
     },
     input: {
       paddingVertical: 16,
       paddingHorizontal: 16,
       backgroundColor: '#FFF',
       borderRadius: 60,
-      borderColor: '#c0c0c0',
-      borderWidth: 1,
-      width: 250,
+      borderWidth: 0,
+      width: 260,
+      shadowRadius: 10,
+      shadowOffset: {
+        width: 8,
+        height: 8,
+      },
+      shadowColor: '#000',
+      shadowOpacity: 0.25,
     },
     addWrapper: {
-      width: 60,
-      height: 60,
+      width: 50,
+      height: 50,
       backgroundColor: '#FFF',
       borderRadius: 60,
       justifyContent: 'center',
       alignItems: 'center',
-      borderColor: '#C0C0C0',
-      borderWidth: 1,
+      borderWidth: 0,
+      shadowRadius: 10,
+      shadowOffset: {
+        width: 8,
+        height: 8,
+      },
+      shadowColor: '#000',
+      shadowOpacity: 0.25,
     },   
   });
 

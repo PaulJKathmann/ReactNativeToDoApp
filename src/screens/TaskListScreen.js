@@ -17,25 +17,6 @@ const TaskList = () => {
       dispatch(fetchTasksAction());
     }, [dispatch]); 
 
-    _createTask = () => { 
-        const task = {name: text, completed: false};  
-        props.createTask(task);  
-        setText("");
-    }
-
-    _renderTaskInput = () => {  
-        return (
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height" } style={styles.writeTaskWrapper} >
-                    <TextInput style={styles.input} placeholder={'Write a task'} value={text} onChangeText={text => setText(text)} />
-                    <TouchableOpacity onPress={_createTask} >
-                        <View style={styles.addWrapper}>
-                            <Text style={styles.addText}>+</Text>
-                        </View>
-                    </TouchableOpacity>
-                </KeyboardAvoidingView>
-        );
-    }
-
     return (
         <View style={styles.container}>
             <View>
@@ -62,7 +43,8 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
       fontSize: 24,
-      paddingTop: 40,
+      paddingTop: 20,
+      paddingBottom: 20,
       marginLeft: 24,
       fontWeight: 'bold',
     },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Hoshi } from 'react-native-textinput-effects';
 import Button from 'react-native-button';
 import { connect } from 'react-redux';
@@ -16,16 +16,16 @@ const LoginScreen = () => {
     const _submitLogin = () => {
         dispatch(loginUser(email, password));
     }
-    
+
     return (
-        <View style={styles.container}>
+        <View style={styles.container} >
             <Hoshi label={'Email'} style={styles.inputField} onChangeText={(email) => setEmail(email)} />
             <Hoshi label={'Password'} style={styles.inputField} onChangeText={(password) => setPassword(password)} />
             <Button onPress={_submitLogin}>Login</Button>
             <TouchableOpacity> 
                 <Text style={styles.signUpLink}>Don't have an account? Sign up</Text>
             </TouchableOpacity>
-        <View/>
+        </View>
     )
 };
 

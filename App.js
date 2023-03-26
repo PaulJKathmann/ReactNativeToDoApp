@@ -5,15 +5,25 @@ import TaskList from './src/screens/TaskListScreen';
 import TaskScreen from './src/screens/TaskScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './src/screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
 function MyStack() {
+  const isSignedIn = false;
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="TaskList" component={TaskList} />
-        <Stack.Screen name="TaskScreen" component={TaskScreen} />
+       {isSignedIn ? (
+        <>
+          <Stack.Screen name="TaskList" component={TaskList} />
+          <Stack.Screen name="TaskScreen" component={TaskScreen} />
+        </>
+        ) : (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+        </>
+        )}
       </Stack.Navigator>  
     </NavigationContainer>
   );

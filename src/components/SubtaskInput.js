@@ -6,10 +6,11 @@ import { addSubtask } from '../actions/subtaskActions';
 const SubtaskInput = ({ taskId }) => {
     const [text, setText] = useState("");
     const dispatch = useDispatch();
+    let token = useSelector((state) => state.auth.token);
 
     _createSubtask = () => { 
         const subtaskName = text; 
-        dispatch(addSubtask(taskId, subtaskName));  
+        dispatch(addSubtask(taskId, subtaskName, token));
         setText("");
     }
 

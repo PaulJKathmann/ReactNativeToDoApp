@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import store from './src/reducers/store';
 import TaskList from './src/screens/TaskListScreen';
 import TaskScreen from './src/screens/TaskScreen';
@@ -11,7 +11,8 @@ import SignupScreen from './src/screens/SignupScreen';
 const Stack = createStackNavigator();
 
 function MyStack() {
-  const isSignedIn = false;
+  const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -11,6 +11,7 @@ const TaskScreen = ({ route }) => {
     const { taskId } = route.params;
     task = useSelector((state) => getTaskById(state, taskId));
     subtasks = useSelector((state) => getSubtasksByTaskId(state, taskId));
+    token = useSelector((state) => state.auth.token);
 
     return (
       <View style={styles.container}>

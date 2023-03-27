@@ -16,10 +16,12 @@ const LoginScreen = () => {
     const navigation = useNavigation();
 
     const _submitLogin = () => {
-        dispatch(loginUser(email, password));
+        const user = { user: { email: email, password: password } };
+        dispatch(loginUser(user));
     }
 
     const _goToSignUp = () => {
+        console.log("Go to sign up");
         navigation.navigate("Sign Up");
     };
 
@@ -27,11 +29,13 @@ const LoginScreen = () => {
         <View style={styles.container} >
             <Hoshi label={'Email'} style={styles.inputField} onChangeText={(email) => setEmail(email)} />
             <Hoshi label={'Password'} style={styles.inputField} onChangeText={(password) => setPassword(password)} />
-            <Button onPress={_submitLogin}>Login</Button>
-            <TouchableOpacity> 
-                <Text style={styles.signUpLink} onPress={_goToSignUp} >Don't have an account? Sign up</Text>
-            </TouchableOpacity>
-        </View>
+            <Button style={styles.button} onPress={_submitLogin}>Login</Button>
+            <View style={styles.signUpLinkWrapper}>
+                <TouchableOpacity onPress={_goToSignUp}> 
+                    <Text>Don't have an account? Sign up</Text>
+                </TouchableOpacity>
+            </View>
+        </View>   
     )
 };
 
@@ -44,10 +48,15 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#b76c94',
         backgroundColor: '#fff',
+        marginBottom: 10,
     },
-    signUpLink: {
+    signUpLinkWrapper: {
         color: '#b76c94',
         position: 'absolute',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
         bottom: 20,
     },
     button: {

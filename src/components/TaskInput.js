@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, StyleSheet } from 'react-native';
 import { addTask } from '../actions/taskActions';
 
 const TaskInput = () => {
     const [text, setText] = useState("");
     const dispatch = useDispatch();
+    let token = useSelector((state) => state.auth.token);
 
     _createTask = () => { 
         const taskName = text; 
-        dispatch(addTask(taskName));  
+        dispatch(addTask(taskName, token));  
         setText("");
     }
 

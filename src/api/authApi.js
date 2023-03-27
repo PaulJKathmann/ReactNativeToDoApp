@@ -1,7 +1,12 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/v1/login";
+const API_URL = "http://localhost:3000/users";
 
-export const apiLogin = (email, password) => {
-    axios.post(`${API_URL}`, {email, password});
+export const apiLogin = (user) => {
+    return axios.post(`${API_URL}/sign_in`, user);
 };
+
+export const apiSignup = (user) => {
+    console.log("apiSignup: ", user);
+    return axios.post(`${API_URL}`, user );
+}

@@ -12,9 +12,10 @@ const TaskList = () => {
     const [text, setText] = useState(''); 
     const dispatch = useDispatch();
     const tasks = useSelector((state) => getAllTasks(state));
+    token = useSelector((state) => state.auth.token);
   
     useEffect(() => {
-      dispatch(fetchTasksAction());
+      dispatch(fetchTasksAction(token));
     }, [dispatch]); 
 
     return (

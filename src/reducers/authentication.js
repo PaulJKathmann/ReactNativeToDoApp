@@ -1,9 +1,10 @@
 const INITIAL_AUTH_STATE = {
     email: '',
     password: '',
-    authentication_token: '',
+    token: '',
     status: 'idle',
-    spinner: false
+    error: null,
+    isSignedIn: false,
 };
   
 const authReducer = (state = INITIAL_AUTH_STATE, action) => {
@@ -13,11 +14,13 @@ const authReducer = (state = INITIAL_AUTH_STATE, action) => {
       case 'PASSWORD_CHANGED':
         return { ...state, password: action.payload };
       case 'auth/loginUserSuccess':
-        return { ...state, ...action.payload, ...INITIAL_AUTH_STATE };
+        return { ...state, token: action.payload, isSignedIn: true };
       case 'auth/loginUserFailure':
-        return { ...state, errorFlag: true, password: '', spinner: false };
-      case 'LOAD_SPINNER':
-        return { ...state, spinner: true };
+        return { ...state, status: 'failure', error: action.payload, isSignedIn: false };
+      case 'auth/SignupUserSuccess':
+        return { ...state, token: action.payload, isSignedIn: true };
+      case 'auth/SignupUserFailure':
+        return { ...state, status: 'failure', error: action.payload };
       default:
         return state;
     }

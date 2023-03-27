@@ -24,7 +24,7 @@ const Task = ({taskId}) => {
 
     const _deleteTask = () => {
         console.log("Delete Task");
-        dispatch(deleteTask(task.id));
+        dispatch(deleteTask(task.id, token));
     };
 
     const textStyle = task.completed ? [styles.itemText, styles.crossedText] : styles.itemText;

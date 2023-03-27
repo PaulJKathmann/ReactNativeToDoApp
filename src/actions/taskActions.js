@@ -18,7 +18,7 @@ export const addTask = (name, token) => async (dispatch) => {
   }
 };
 
-export const completeTask = (task) => async (dispatch) => {
+export const completeTask = (task, token) => async (dispatch) => {
   try {
     const response = await apiUpdateTask(task, token);
     dispatch({ type: 'tasks/updateTaskSuccess', payload: response.data });
@@ -27,7 +27,7 @@ export const completeTask = (task) => async (dispatch) => {
   }
 };
 
-export const deleteTask = (id) => async (dispatch) => {
+export const deleteTask = (id, token) => async (dispatch) => {
   try {
     await apiDeleteTask(id, token);
     dispatch({ type: 'tasks/deleteTaskSuccess', payload: { id } });

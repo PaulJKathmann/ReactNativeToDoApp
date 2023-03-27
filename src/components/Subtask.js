@@ -6,15 +6,16 @@ import { useDispatch, useSelector } from 'react-redux';
 const Subtask = ({subtaskId}) => {
     const dispatch = useDispatch();
     const subtask = useSelector(state => state.subtasks.byId[subtaskId]);
+    let token = useSelector((state) => state.auth.token);
 
     const _completeSubtask = () => {
         if (subtask) {
             const updatedSubtask = { id: subtask.id, completed: !subtask.completed, task_id: subtask.task_id };
-            dispatch(completeSubtask(updatedSubtask));
+            dispatch(completeSubtask(updatedSubtask, token));
         }
     }
     const _deleteTask = () => {
-        dispatch(deleteSubtask(subtask));
+        dispatch(deleteSubtask(subtask, token));
     };
 
     const textStyle = subtask.completed ? [styles.itemText, styles.crossedText] : styles.itemText;

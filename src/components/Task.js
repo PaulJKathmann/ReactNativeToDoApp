@@ -8,11 +8,12 @@ const Task = ({taskId}) => {
     const dispatch = useDispatch();
     const task = useSelector(state => state.tasks.byId[taskId]);
     const navigation = useNavigation();
+    let token = useSelector((state) => state.auth.token);
 
     const _completeTask = () => {
         if (task) {
             const updatedTask = { id: task.id, completed: !task.completed };
-            dispatch(completeTask(updatedTask));
+            dispatch(completeTask(updatedTask, token));
         }
     }
     const _handleTaskPress = () => {

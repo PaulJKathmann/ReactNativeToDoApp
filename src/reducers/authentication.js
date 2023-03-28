@@ -21,6 +21,8 @@ const authReducer = (state = INITIAL_AUTH_STATE, action) => {
         return { ...state, token: action.payload, isSignedIn: true };
       case 'auth/SignupUserFailure':
         return { ...state, status: 'failure', error: action.payload };
+      case 'auth/logoutUserSuccess':
+        return { ...state, token: '', isSignedIn: false };
       default:
         return state;
     }

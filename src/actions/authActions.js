@@ -1,4 +1,4 @@
-import { apiLogin, apiSignup } from "../api/authApi";
+import { apiLogin, apiSignup, apiLogout } from "../api/authApi";
 
 export const loginUser = (user) => async (dispatch) => {
     try {
@@ -22,3 +22,14 @@ export const signupUser = (user) => async (dispatch) => {
         dispatch({ type: 'auth/signupUserFailure', payload: error.message });
     }
 };
+
+export const logoutUser = (token) => async (dispatch) => {
+    try {
+        console.log("logoutUser");
+        const response = await apiLogout(token);
+        dispatch({ type: 'auth/logoutUserSuccess', payload: response.data });
+    } catch (error) {
+        console.log("logout error", error.message);
+        dispatch({ type: 'auth/logoutUserFailure', payload: error.message });
+    }
+}

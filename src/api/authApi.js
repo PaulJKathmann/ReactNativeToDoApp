@@ -10,3 +10,7 @@ export const apiSignup = (user) => {
     console.log("apiSignup: ", user);
     return axios.post(`${API_URL}`, user );
 }
+
+export const apiLogout = (user) => {
+    return axios.delete(`${API_URL}/sign_out`, { headers: { Authorization: token } });
+}
